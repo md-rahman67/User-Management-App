@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Page</title>
+</head>
+<body>
+    <p style="font-size: 1.5rem;"><b>This user wants to edit username: </b> <%= indv.id %></p>
+
+    <form action="/user/<%= indv.id %>?_method=PATCH" method="post">
+        <textarea name="username" style="height: 40px;  width: 250px;"><%= indv.username %></textarea>
+        <br>
+        <input type="password" name="password" placeholder="enter password">
+        <br>
+        <button type="submit">edit</button>
+    </form>
+    <br>
+    <a href="/user">back</a>
+</body>
+</html>

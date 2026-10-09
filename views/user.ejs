@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHOW ALL USERS</title>
+</head>
+
+<body>
+    <h1 style="display: inline;">Users List</h1>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/">Home</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/user/add">Register new user</a>
+
+    <table border="1" style="border-spacing: 5px 10px;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% for(user of users){ %>
+                <tr>
+                    <td>
+                        <%= user.id %>
+                    </td>
+                    <td>
+                        <%= user.username %>
+                    </td>
+                    <td>
+                        <%= user.email %>
+                    </td>
+                    <td>
+                        <form action="/user/<%= user.id %>/edit">
+                            <button>Edit</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/delete/<%= user.id %>/<%= user.username %>" method="get">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+
+                <% } %>
+        </tbody>
+    </table>
+</body>
+
+</html>
