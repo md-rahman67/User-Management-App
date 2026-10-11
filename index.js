@@ -164,7 +164,7 @@ app.get("/delete/:id/:username", (req, res) => {
   res.render("delete.ejs", { username, id });
 })
 
-// DELETE REQ - to delete individual user
+// !DELETE REQ - to delete individual user
 app.delete("/delete/:id", (req, res) => {
   let { id } = req.params;
 
