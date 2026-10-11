@@ -1,11 +1,36 @@
-<%  layout("/layouts/boilerplate") %>
-<body>
-    <h2>Register a new user:-</h2>
+<% layout("/layouts/boilerplate") %>
 
-    <form method="post" action="/user">
-        <input type="text" name="username" placeholder="enter username">
-        <input type="email" name="email" placeholder="enter email">
-        <input type="password" name="password" placeholder="password">
-        <button type="submit">Register</button>
-    </form>
-</body>
+    <body>
+        <h2>Register a new user:-</h2>
+
+
+
+        <div class="card" style="max-width: 320px;">
+            <div class="card-body">
+                <form method="post" action="/user">
+                    <!-- <input type="text" name="username" placeholder="enter username">
+                    <input type="email" name="email" placeholder="enter email">
+                    <input type="password" name="password" placeholder="password">
+                    <button type="submit">Register</button> -->
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Enter Username</label>
+                        <input class="form-control" name="username" id="username">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Enter Email</label>
+                        <input class="form-control" name="email" id="email">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Enter Password</label>
+                        <input class="form-control" type="password" name="password" placeholder="enter password" id="password">
+                        <div id="emailHelp" class="form-text">We’ll never share your password with anyone else.</div>
+                    </div>
+
+                     <button type="submit" class="btn btn-primary">Add</button>
+                </form>
+            </div>
+        </div>
+    </body>

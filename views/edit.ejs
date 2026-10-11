@@ -1,14 +1,32 @@
 <% layout("/layouts/boilerplate") %>
-<body>
-    <p style="font-size: 1.5rem;"><b>This user wants to edit username: </b> <%= indv.id %></p>
 
-    <form action="/user/<%= indv.id %>?_method=PATCH" method="post">
-        <textarea name="username" style="height: 40px;  width: 250px;"><%= indv.username %></textarea>
-        <br>
-        <input type="password" name="password" placeholder="enter password">
-        <br>
-        <button type="submit">edit</button>
-    </form>
-    <br>
-    <a href="/user">back</a>
-</body>
+    <body>
+        <p style="font-size: 1.5rem;"><b>This user wants to edit username: </b>
+            <%= indv.id %>
+        </p>
+
+        <div class="card" style="max-width: 320px;">
+            <div class="card-body">
+
+                <form action="/user/<%= indv.id %>?_method=PATCH" method="post">
+                    <!-- <div class="row"> -->
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Edit Username</label>
+                        <input class="form-control" name="username" id="username" value="<%= indv.username %>">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Enter Password</label>
+                        <input type="password" name="password" placeholder="enter password" class="form-control">
+                        <div id="emailHelp" class="form-text">We’ll never share your password with anyone else.</div>
+                    </div>
+                    <!-- </div> -->
+
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </form>
+
+            </div>
+        </div>
+
+
+    </body>
