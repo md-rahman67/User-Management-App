@@ -23,7 +23,7 @@
                     <% for(user of users){ %>
                         <tr>
                             <td>
-                                <%= user.id %>
+                                <%= user.id.slice(0,8) %>...
                         </td>
                         <td>
                             <%= user.username %>
