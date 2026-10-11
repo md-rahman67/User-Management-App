@@ -4,12 +4,14 @@ const mysql = require("mysql2");
 const { faker, tr } = require("@faker-js/faker");
 const methodOverride = require('method-override');
 const { v4: uuidv4 } = require("uuid");
+const ejsMate = require("ejs-mate");
 
 const path = require("path"); // to access views and public folder from index.js we require "path"
 
 const app = express();
 const port = 8080;
 
+app.engine("ejs", ejsMate);
 app.use(methodOverride('_method')); // to use PUT and PATCH req
 app.use(express.urlencoded({ extended: true })); // to parse POST req data
 
