@@ -1,28 +1,29 @@
 <% layout("/layouts/boilerplate") %>
 
     <body>
-        <h1 style="display: inline;">Users List</h1>
+        <!-- <h1 style="display: inline;">Users List</h1>
         &nbsp;&nbsp;&nbsp;&nbsp;
         <a href="/">Home</a>
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <a href="/user/add">Register new user</a>
-
-        <table border="1" style="border-spacing: 5px 10px;" class="table table-hover">
-            <thead class="table-primary">
-                <tr class="theme-info">
-                    <th scope="col">ID</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Actions</th>
-                    <th scope="col">Delete</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <% for(user of users){ %>
-                    <tr>
-                        <td>
-                            <%= user.id %>
+        <a href="/user/add">Register new user</a> -->
+        <div class="tbl" style="border-radius: 1rem !important;">
+            
+            <table style="border-spacing: 5px 10px;" class="table table-hover">
+                <thead class="table-primary">
+                    <tr class="theme-info">
+                        <th scope="col">ID</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Actions</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <% for(user of users){ %>
+                        <tr>
+                            <td>
+                                <%= user.id %>
                         </td>
                         <td>
                             <%= user.username %>
@@ -47,4 +48,5 @@
                     <% } %>
             </tbody>
         </table>
+    </div>
     </body>
