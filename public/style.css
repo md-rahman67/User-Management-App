@@ -2,11 +2,11 @@ body{
     background-color: rgba(173, 216, 230, 0.504) !important;
 }
 
-.tbl{
+/* .tbl{
     border: 1px solid black !important;
     border-radius: 1rem !important;
     padding-top: 0.8rem !important;
-}
+} */
 
 h3{
     color: rgb(0, 0, 124) !important;

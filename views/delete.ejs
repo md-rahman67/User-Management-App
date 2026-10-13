@@ -1,15 +1,23 @@
 <% layout("/layouts/boilerplate") %>
 
-<body>
-    <h2>Delete User</h2>
-    <p><b>username: </b> <%= username %> </p>
-    <p>**Enter your email & password correct to delete your account.</p>
+    <body>
+        <h2>Delete User</h2>
+        <h3><b>username: </b>
+            <%= username %>
+        </h3>
+        <p>**Enter your email & password correct to delete your account.</p>
 
-    <form action="/delete/<%= id %>?_method=DELETE" method="post">
-        <input type="email" name="email" placeholder="enter email">
-        <input type="password" name="password" placeholder="enter password">
-        <button type="submit">Delete</button>
-    </form>
-    <br>
-    <a href="/user">back</a>
-</body>
+        <form action="/delete/<%= id %>?_method=DELETE" method="post" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <input type="email" name="email" placeholder="enter email" required>
+                <div class="invalid-feedback">Enter correct email</div>
+            </div>
+            <div class="mb-3">
+                <input type="password" name="password" placeholder="enter password" required>
+                <div class="invalid-feedback">Enter correct password</div>
+            </div>
+            <button type="submit">Delete</button>
+        </form>
+        <br>
+        <a href="/user">back</a>
+    </body>

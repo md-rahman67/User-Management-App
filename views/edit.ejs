@@ -8,16 +8,21 @@
         <div class="card" style="max-width: 320px;">
             <div class="card-body">
 
-                <form action="/user/<%= indv.id %>?_method=PATCH" method="post">
+                <form action="/user/<%= indv.id %>?_method=PATCH" method="post" class="needs-validation" novalidate>
                     <!-- <div class="row"> -->
                     <div class="mb-3">
                         <label for="username" class="form-label">Edit Username</label>
-                        <input class="form-control" name="username" id="username" value="<%= indv.username %>">
+                        <div class="input-group">
+                            <span class="input-group-text">@</span>
+                            <input type="text" class="form-control" name="username" id="username" value="<%= indv.username %>" required>
+                        </div>
+                        <div class="invalid-feedback">Username is required</div>
                     </div>
 
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Enter Password</label>
-                        <input type="password" name="password" placeholder="enter password" class="form-control">
+                        <input type="password" name="password" placeholder="enter password" class="form-control" required>
+                        <div class="invalid-feedback">Password is must</div>
                         <div id="emailHelp" class="form-text">We’ll never share your password with anyone else.</div>
                     </div>
                     <!-- </div> -->
