@@ -6,26 +6,28 @@
 
         <div class="card" style="max-width: 320px;">
             <div class="card-body">
-                <form method="post" action="/user">
-                    <!-- <input type="text" name="username" placeholder="enter username">
-                    <input type="email" name="email" placeholder="enter email">
-                    <input type="password" name="password" placeholder="password">
-                    <button type="submit">Register</button> -->
+                <form method="post" action="/user" class="needs-validation" novalidate>
 
                     <div class="mb-3">
                         <label for="username" class="form-label">Enter Username</label>
-                        <input class="form-control" name="username" id="username">
+                        <div class="input-group">
+                             <span class="input-group-text" id="inputGroupPrepend">@</span>
+                             <input class="form-control" name="username" id="username" required>
+                        </div>
+                        <div class="invalid-feedback">Username is required</div>
                     </div>
 
                     <div class="mb-3">
                         <label for="email" class="form-label">Enter Email</label>
-                        <input class="form-control" name="email" id="email">
+                        <input class="form-control" name="email" id="email" required>
+                        <div class="invalid-feedback">Email is required</div>
                     </div>
 
                     <div class="mb-3">
                         <label for="password" class="form-label">Enter Password</label>
                         <input class="form-control" type="password" name="password" placeholder="enter password"
-                            id="password">
+                            id="password" required minlength="8">
+                        <div class="invalid-feedback">Create strong password</div>
                         <div id="emailHelp" class="form-text">We’ll never share your password with anyone else.
                         </div>
                     </div>

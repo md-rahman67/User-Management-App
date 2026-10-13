@@ -11,6 +11,8 @@ const path = require("path"); // to access views and public folder from index.js
 const app = express();
 const port = 8080;
 
+
+//TODO ---------------Middlewares----------------
 app.engine("ejs", ejsMate);
 app.use(methodOverride('_method')); // to use PUT and PATCH req
 app.use(express.urlencoded({ extended: true })); // to parse POST req data
@@ -20,6 +22,11 @@ app.set("view engine, ejs"); // to render ejs file set "view engine" to "ejs"
 app.set("views", path.join(__dirname, "views")); // to set path for views folder so index.js can access from anywhere
 app.use(express.static(path.join(__dirname, "public"))); // to set public folder path so index.js can access public folder from anywhere
 
+
+
+
+
+//* ----------Database Connection-----------------------------------------------
 const connection = mysql.createConnection({ // to create connect between node and mysql databases
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -41,7 +48,7 @@ let getRandomUser = () => { // to get fake user data we require "@faker-js/faker
 
 
 
-// --------------------------- SERVER LISTEN--------------------------------------
+//*------- SERVER LISTEN--------------------------------------
 // GWT - user counts
 app.get("/", (req, res) => {
   let q = `SELECT COUNT(*) FROM user`;
