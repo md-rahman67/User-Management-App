@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oops! Something Went Wrong</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Nunito', sans-serif;
+      background: #dff3ff;
+      color: #37334d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Floating background decorations */
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      border-radius: 50%;
+      z-index: -1;
+      opacity: 0.7;
+    }
+
+    body::before {
+      width: 300px;
+      height: 300px;
+      background: #ffd9e7;
+      top: -100px;
+      left: -100px;
+    }
+
+    body::after {
+      width: 250px;
+      height: 250px;
+      background: #fff0b8;
+      bottom: -80px;
+      right: -60px;
+    }
+
+    .error-card {
+      width: 100%;
+      max-width: 750px;
+      background: rgba(255, 255, 255, 0.88);
+      border: 3px solid #fff;
+      border-radius: 32px;
+      padding: 48px 28px;
+      text-align: center;
+      box-shadow: 0 12px 0 #c4e2f4,
+                  0 22px 50px rgba(75, 105, 145, 0.15);
+      animation: pop-in 0.6s ease both;
+    }
+
+    .mascot {
+      font-size: 76px;
+      margin-bottom: 8px;
+      display: inline-block;
+      animation: wobble 3s ease-in-out infinite;
+    }
+
+    .error-code {
+      font-size: clamp(76px, 15vw, 120px);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -5px;
+      color: #8274d9;
+      text-shadow: 5px 5px 0 #e5dcff;
+    }
+
+    .error-title {
+      font-size: clamp(28px, 5vw, 40px);
+      font-weight: 900;
+      margin: 18px 0 12px;
+    }
+
+    .error-message {
+      display: inline-block;
+      max-width: 100%;
+      padding: 12px 20px;
+      border-radius: 18px;
+      background: #fff0c9;
+      border: 2px dashed #f2c56c;
+      color: #73552c;
+      font-size: 18px;
+      font-weight: 800;
+      overflow-wrap: anywhere;
+    }
+
+    .description {
+      max-width: 460px;
+      margin: 18px auto 28px;
+      color: #77758e;
+      font-size: 16px;
+      line-height: 1.8;
+    }
+
+    .home-btn {
+      display: inline-block;
+      padding: 14px 28px;
+      border-radius: 16px;
+      background: #ffcf70;
+      color: #493d4f;
+      border: 3px solid #493d4f;
+      box-shadow: 0 5px 0 #493d4f;
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 900;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .home-btn:hover {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 #493d4f;
+    }
+
+    .home-btn:active {
+      transform: translateY(5px);
+      box-shadow: none;
+    }
+
+    .tiny-note {
+      margin-top: 26px;
+      font-size: 13px;
+      color: #a1a0b5;
+    }
+
+    @keyframes pop-in {
+      from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @keyframes wobble {
+      0%, 100% { transform: rotate(-5deg); }
+      50% { transform: rotate(5deg); }
+    }
+
+    @media (max-width: 480px) {
+      .error-card {
+        padding: 35px 18px;
+        border-radius: 24px;
+      }
+
+      .mascot {
+        font-size: 60px;
+      }
+
+      .error-message {
+        font-size: 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="error-card">
+
+    <div class="mascot" aria-hidden="true">🥺</div>
+
+    <h1 class="error-code"><%= statusCode %></h1>
+
+    <h2 class="error-title">Oops! Something went wrong!</h2>
+
+    <p class="error-message"><%= message %></p>
+
+    <p class="description">
+      Looks like our little adventure took an unexpected turn.
+      Don't worry, let's get you back on track! ✨
+    </p>
+
+    <a href="/listings" class="home-btn">🏠 Take Me Home</a>
+
+    <p class="tiny-note">
+      Made with a little magic and a lot of ☁️
+    </p>
+
+  </main>
+</body>
+</html>

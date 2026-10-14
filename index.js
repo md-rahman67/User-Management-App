@@ -5,6 +5,7 @@ const { faker, tr } = require("@faker-js/faker");
 const methodOverride = require('method-override');
 const { v4: uuidv4 } = require("uuid");
 const ejsMate = require("ejs-mate");
+const ExpressError = require("./ExpressError");
 
 const path = require("path"); // to access views and public folder from index.js we require "path"
 
@@ -202,6 +203,13 @@ app.delete("/delete/:id", (req, res) => {
 
   })
 
+})
+
+
+//! Error handling Middleware---------------------------------
+app.use((err, req, res, next) => {
+  let { statusCode=500, message="Something went wrong!!" } = err;
+  res.status(statusCode).render("err.ejs", { statusCode, message});
 })
 
 app.listen(port, () => {
