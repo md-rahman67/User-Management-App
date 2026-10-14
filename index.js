@@ -54,53 +54,56 @@ let getRandomUser = () => { // to get fake user data we require "@faker-js/faker
 app.get("/", (req, res) => {
   let q = `SELECT COUNT(*) FROM user`;
 
-  try {
-    connection.query(q, (err, result) => {
-      if (err) throw err;
-      let count = result;
-      res.render("home.ejs", { count });
-    })
-  } catch (error) {
-    res.send(`some error in database: ${error}`);
-  }
+  connection.query(q, (err, result) => {
+    if (err) {
+      throw new ExpressError(500, "Failed to process your request.");
+    }
+
+    let count = result;
+    res.render("home.ejs", { count });
+  })
 
 })
 
 
-// GET - show all users details
+//* GET - show all users details
 app.get("/user", (req, res) => {
   let q = `SELECT * FROM user`;
 
-  try {
-    connection.query(q, (err, result) => {
-      if (err) throw err;
-      let users = result;
-      res.render("user.ejs", { users });
-    })
-  } catch (error) {
-    res.send(`some error in database: ${error}`);
-  }
+
+  connection.query(q, (err, result) => {
+    if (err) {
+      throw new ExpressError(500, "Failed to process your request.");
+    }
+    let users = result;
+    res.render("user.ejs", { users });
+  })
 
 });
 
-//GET - form to edit username
+//* GET - form to edit username
 app.get("/user/:id/edit", (req, res) => {
   let { id } = req.params;
   let q = `SELECT * FROM user WHERE id = ?`;
   let value = id;
 
-    connection.query(q, value, (err, result) => {
-      if (err) {
-        return res.send(`some error in database: ${err}`);
-      }
-      let indv = result[0];
-      res.render("edit.ejs", { indv })
-    })
+  connection.query(q, value, (err, result) => {
+    if (err) {
+      throw new ExpressError(500, "Failed to process your request.")
+    }
+    let indv = result[0];
+    res.render("edit.ejs", { indv })
+  })
 })
 
-// PATCH REQ - to edit username in db
+//* PATCH REQ - to edit username in db
 app.patch("/user/:id", (req, res) => {
   let { id } = req.params;
+
+  if (!req.body) {
+    throw new ExpressError(400, "Required fields are missing");
+  }
+
   let username = req.body.username;
   let formPass = req.body.password;
 
@@ -110,9 +113,9 @@ app.patch("/user/:id", (req, res) => {
   let q1 = `SELECT password FROM user WHERE id = ?`;
   let value = id;
 
-  connection.query(q1, value, (err, result) => {
+  connection.query(q1, value, (err, result, next) => {
     if (err) {
-      return res.send(`some error in database: ${err}`);
+      throw new ExpressError(500, "Failed to process your request.");
     }
 
     if (formPass === result[0].password) {
@@ -122,27 +125,36 @@ app.patch("/user/:id", (req, res) => {
 
       connection.query(q2, values, (err, result) => {
         if (err) {
-          return res.send(`some error in database: ${err}`);
+          throw new ExpressError(500, "Failed to process your request.");
         }
         console.log(result);
         res.redirect("/user");
       })
     } else {
-      res.send("Wrong Password! try again later");
+      throw new ExpressError(500, "Invalid Password! Please enter your password again");
     }
 
   })
 
 })
 
-//GET- form to add new user
+//* GET- form to add new user
 app.get("/user/add", (req, res) => {
   res.render("add.ejs");
 })
 
-// POST REQ - to add/register a new user
-app.post("/user", (req, res) => {
+//* POST REQ - to add/register a new user
+app.post("/user", (req, res, next) => {
+
+  if (!req.body) {
+    throw new ExpressError(400, "Required fields are missing");
+  }
+
   let { username, email, password } = req.body;
+
+  if (!username.trim() || !email || !password.trim()) {
+    return next(new ExpressError(400, "Required fields are missing"));
+  }
 
   let q = `INSERT INTO user (id, username,  email, password) VALUES (?, ?, ?, ?)`;
   let values = [uuidv4(), username, email, password];
@@ -158,7 +170,7 @@ app.post("/user", (req, res) => {
       }
     })
   } catch (error) {
-    res.send(`some error in database: ${error}`);
+    next(err);
   }
 
   console.log(username);
@@ -198,7 +210,7 @@ app.delete("/delete/:id", (req, res) => {
         res.redirect("/user");
       })
     } else {
-        res.send("Wrong!! check your email & password again and try again later.");
+      res.send("Wrong!! check your email & password again and try again later.");
     }
 
   })
@@ -208,8 +220,8 @@ app.delete("/delete/:id", (req, res) => {
 
 //! Error handling Middleware---------------------------------
 app.use((err, req, res, next) => {
-  let { statusCode=500, message="Something went wrong!!" } = err;
-  res.status(statusCode).render("err.ejs", { statusCode, message});
+  let { statusCode = 500, message = "Something went wrong!!" } = err;
+  res.status(statusCode).render("err.ejs", { statusCode, message });
 })
 
 app.listen(port, () => {
