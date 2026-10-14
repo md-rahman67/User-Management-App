@@ -6,6 +6,7 @@ const methodOverride = require('method-override');
 const { v4: uuidv4 } = require("uuid");
 const ejsMate = require("ejs-mate");
 const ExpressError = require("./ExpressError");
+const joiUserSchema = require("./schema.js");
 
 const path = require("path"); // to access views and public folder from index.js we require "path"
 
@@ -24,6 +25,16 @@ app.set("views", path.join(__dirname, "views")); // to set path for views folder
 app.use(express.static(path.join(__dirname, "public"))); // to set public folder path so index.js can access public folder from anywhere
 
 
+//* Check user field before saving in DB;
+const validateUser = ((req, res, next) => {
+  let { error} = joiUserSchema.validate(req.body);
+
+  if(error){
+    throw new ExpressError(401, error.details[0].message);
+  } else {
+    next();
+  }
+})
 
 
 
@@ -56,7 +67,7 @@ app.get("/", (req, res) => {
 
   connection.query(q, (err, result) => {
     if (err) {
-      throw new ExpressError(500, "Failed to process your request.");
+      return next(new ExpressError(500, "Failed to process your request."));
     }
 
     let count = result;
@@ -73,7 +84,7 @@ app.get("/user", (req, res) => {
 
   connection.query(q, (err, result) => {
     if (err) {
-      throw new ExpressError(500, "Failed to process your request.");
+      return next(new ExpressError(500, "Failed to process your request."));
     }
     let users = result;
     res.render("user.ejs", { users });
@@ -89,7 +100,7 @@ app.get("/user/:id/edit", (req, res) => {
 
   connection.query(q, value, (err, result) => {
     if (err) {
-      throw new ExpressError(500, "Failed to process your request.")
+      return next(new ExpressError(500, "Failed to process your request."));
     }
     let indv = result[0];
     res.render("edit.ejs", { indv })
@@ -97,12 +108,8 @@ app.get("/user/:id/edit", (req, res) => {
 })
 
 //* PATCH REQ - to edit username in db
-app.patch("/user/:id", (req, res) => {
+app.patch("/user/:id",validateUser ,(req, res, next) => {
   let { id } = req.params;
-
-  if (!req.body) {
-    throw new ExpressError(400, "Required fields are missing");
-  }
 
   let username = req.body.username;
   let formPass = req.body.password;
@@ -115,7 +122,7 @@ app.patch("/user/:id", (req, res) => {
 
   connection.query(q1, value, (err, result, next) => {
     if (err) {
-      throw new ExpressError(500, "Failed to process your request.");
+      return next(new ExpressError(500, "Failed to process your request."));
     }
 
     if (formPass === result[0].password) {
@@ -125,13 +132,13 @@ app.patch("/user/:id", (req, res) => {
 
       connection.query(q2, values, (err, result) => {
         if (err) {
-          throw new ExpressError(500, "Failed to process your request.");
+          return next(new ExpressError(500, "Failed to process your request."));
         }
         console.log(result);
         res.redirect("/user");
       })
     } else {
-      throw new ExpressError(500, "Invalid Password! Please enter your password again");
+      return next(new ExpressError(500, "Failed to process your request."));
     }
 
   })
@@ -143,18 +150,10 @@ app.get("/user/add", (req, res) => {
   res.render("add.ejs");
 })
 
-//* POST REQ - to add/register a new user
-app.post("/user", (req, res, next) => {
-
-  if (!req.body) {
-    throw new ExpressError(400, "Required fields are missing");
-  }
-
+//* POST REQ - add route
+app.post("/user", validateUser ,(req, res, next) => {
   let { username, email, password } = req.body;
 
-  if (!username.trim() || !email || !password.trim()) {
-    return next(new ExpressError(400, "Required fields are missing"));
-  }
 
   let q = `INSERT INTO user (id, username,  email, password) VALUES (?, ?, ?, ?)`;
   let values = [uuidv4(), username, email, password];
@@ -162,7 +161,7 @@ app.post("/user", (req, res, next) => {
   try {
     connection.query(q, values, (err, result) => {
       if (err) {
-        return res.send(`some error in database: ${err}`);
+        return next(new ExpressError(500, "Failed to process your request."));
       }
 
       if (result) {
@@ -195,7 +194,7 @@ app.delete("/delete/:id", (req, res) => {
 
   connection.query(q1, value, (err, result) => {
     if (err) {
-      return res.send(`some error in database: ${err}`);
+      return next(new ExpressError(500, "Failed to process your request."));
     }
 
     if (formEmail === result[0].email && formPass === result[0].password) {
@@ -204,13 +203,13 @@ app.delete("/delete/:id", (req, res) => {
 
       connection.query(q2, value, (err, result) => {
         if (err) {
-          return res.send(`some error in database: ${err}`);;
+         return next(new ExpressError(500, "Failed to process your request."));
         }
         console.log(result);
         res.redirect("/user");
       })
     } else {
-      res.send("Wrong!! check your email & password again and try again later.");
+      return next(new ExpressError(401, "Invalid password, Please enter correct password"));
     }
 
   })

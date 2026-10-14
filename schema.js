@@ -1,6 +1,6 @@
 const Joi = require("joi");
 
-const userSchema = Joi.object({
+const joiUserSchema = Joi.object({
     username: Joi.string().required().trim(),
 
     email: Joi.string().email({
@@ -10,3 +10,5 @@ const userSchema = Joi.object({
 
     password: Joi.string().trim().min(8)
 })
+
+module.exports = joiUserSchema;
